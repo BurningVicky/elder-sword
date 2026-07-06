@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title> Elder Sword</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- Camada de fundo decorativa (montanhas / silhuetas) -->
+  <div class="cena-fundo" aria-hidden="true">
+    <div class="camada camada-ceu"></div>
+    <div class="camada camada-montanhas"></div>
+    <div class="camada camada-arvores"></div>
+    <div class="tocha tocha-esquerda" aria-hidden="true"><span class="chama"></span></div>
+    <div class="tocha tocha-direita" aria-hidden="true"><span class="chama"></span></div>
+  </div>
+
+  <!-- Container central onde as telas são alternadas -->
+  <main class="palco">
+
+    <!-- ===================== TELA DE LOGIN ===================== -->
+    <section id="tela-login" class="tela pergaminho ativa" aria-labelledby="titulo-login">
+      <div class="moldura-cantos" aria-hidden="true"></div>
+
+      <h1 id="titulo-login" class="titulo-jogo">Elder <span>Sword</span></h1>
+      <p class="subtitulo">Entre ou cadastre-se para continuar</p>
+
+      <form id="form-login" class="formulario" novalidate>
+        <div class="campo">
+          <label for="login-usuario">Nome de usuário</label>
+          <input type="text" id="login-usuario" name="usuario" placeholder="Adicione seu nome de usuário" autocomplete="username" />
+        </div>
+
+        <div class="campo">
+          <label for="login-senha">Senha</label>
+          <input type="password" id="login-senha" name="senha" placeholder="Digite sua senha" autocomplete="current-password" />
+        </div>
+
+        <div id="mensagem-login" class="mensagem" role="alert" aria-live="polite"></div>
+
+        <div class="grupo-botoes">
+          <button type="submit" class="botao botao-primario">⚔ Entrar</button>
+          <button type="button" id="btn-ir-cadastro" class="botao botao-secundario">📜 Cadastrar-se</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ===================== TELA DE CADASTRO ===================== -->
+    <section id="tela-cadastro" class="tela pergaminho" aria-labelledby="titulo-cadastro">
+      <div class="moldura-cantos" aria-hidden="true"></div>
+
+      <h1 id="titulo-cadastro" class="titulo-jogo titulo-menor">Criar Conta</h1>
+      <p class="subtitulo"> Entre no mundo de Elder Sword</p>
+
+      <form id="form-cadastro" class="formulario" novalidate>
+        <div class="campo">
+          <label for="cadastro-usuario">Nome de usuário</label>
+          <input type="text" id="cadastro-usuario" name="usuario" placeholder="Escolha um nome único" autocomplete="username" />
+        </div>
+
+        <div class="campo">
+          <label for="cadastro-senha">Senha</label>
+          <input type="password" id="cadastro-senha" name="senha" placeholder="Crie uma senha" autocomplete="new-password" />
+        </div>
+
+        <div class="campo">
+          <label for="cadastro-confirmar-senha">Confirmar senha</label>
+          <input type="password" id="cadastro-confirmar-senha" name="confirmarSenha" placeholder="Repita a senha" autocomplete="new-password" />
+        </div>
+
+        <div id="mensagem-cadastro" class="mensagem" role="alert" aria-live="polite"></div>
+
+        <div class="grupo-botoes">
+          <button type="submit" class="botao botao-primario">🛡 Criar Conta</button>
+          <button type="button" id="btn-voltar-login" class="botao botao-secundario">↩ Voltar</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ===================== TELA INICIAL DO JOGO (DASHBOARD) ===================== -->
+    <section id="tela-dashboard" class="tela pergaminho" aria-labelledby="titulo-dashboard">
+      <div class="moldura-cantos" aria-hidden="true"></div>
+
+      <h1 id="titulo-dashboard" class="titulo-jogo titulo-menor">Dashboard</h1>
+      <p class="subtitulo">Bem-vindo(a) de volta, aventureiro(a)</p>
+
+      <div class="cartao-personagem">
+        <div class="retrato-personagem" id="icone-classe" aria-hidden="true">🛡</div>
+
+        <div class="atributos-personagem">
+          <div class="linha-atributo">
+            <span class="rotulo-atributo">Nome</span>
+            <span class="valor-atributo" id="dado-nome">—</span>
+          </div>
+          <div class="linha-atributo">
+            <span class="rotulo-atributo">Classe</span>
+            <span class="valor-atributo" id="dado-classe">—</span>
+          </div>
+          <div class="linha-atributo">
+            <span class="rotulo-atributo">Nível</span>
+            <span class="valor-atributo" id="dado-nivel">—</span>
+          </div>
+          <div class="linha-atributo">
+            <span class="rotulo-atributo">Ouro</span>
+            <span class="valor-atributo" id="dado-ouro">—</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="mensagem-dashboard" class="mensagem" role="status" aria-live="polite"></div>
+
+      <div class="grupo-botoes">
+        <button type="button" id="btn-logout" class="botao botao-perigo">🚪 Sair do Jogo</button>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="rodape">
+    Projeto Integrador V-B, Módulo de Autenticação RPG
+  </footer>
+
+  <!-- Módulos JavaScript separados por responsabilidade -->
+  <script src="js/storage.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cadastro.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

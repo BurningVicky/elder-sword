@@ -1,0 +1,438 @@
+
+:root {
+  --cor-fundo-abismo: #14100c;
+  --cor-pedra: #1f1812;
+  --cor-couro: #2b2118;
+  --cor-couro-claro: #3c2e20;
+  --cor-pergaminho: #e9dcc0;
+  --cor-pergaminho-escuro: #cbb98d;
+  --cor-ouro: #d8ae43;
+  --cor-ouro-claro: #f2cd6b;
+  --cor-brasa: #c1440e;
+  --cor-brasa-clara: #e2691f;
+  --cor-erro: #9c2b2b;
+  --cor-sucesso: #4d7c4a;
+
+  /* Tipografia */
+  --fonte-titulo: Georgia, 'Times New Roman', serif;
+  --fonte-corpo: 'Trebuchet MS', Verdana, sans-serif;
+
+  /* Espaçamento e forma */
+  --raio-padrao: 4px;
+  --sombra-profunda: 0 20px 60px rgba(0, 0, 0, 0.65);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--fonte-corpo);
+  color: var(--cor-pergaminho);
+  background: var(--cor-fundo-abismo);
+  overflow-x: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==========================================================================
+   CENÁRIO DE FUNDO
+   ========================================================================== */
+.cena-fundo {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.camada-ceu {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% -10%, #3a2a1c 0%, #1a130d 55%, #100c08 100%);
+}
+
+.camada-montanhas {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 45%;
+  background:
+    linear-gradient(180deg, transparent 0%, var(--cor-fundo-abismo) 100%),
+    repeating-conic-gradient(from 200deg at 10% 100%, #241b12 0deg 15deg, #1a130d 15deg 30deg);
+  clip-path: polygon(0% 100%, 0% 60%, 8% 40%, 18% 65%, 30% 30%, 42% 62%, 55% 20%, 68% 58%, 80% 35%, 92% 60%, 100% 45%, 100% 100%);
+  opacity: 0.9;
+}
+
+.camada-arvores {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 22%;
+  background: var(--cor-fundo-abismo);
+  clip-path: polygon(0% 100%, 0% 70%, 4% 40%, 7% 70%, 12% 30%, 16% 70%, 22% 45%, 26% 70%, 33% 20%, 38% 70%, 45% 50%, 50% 70%, 57% 25%, 62% 70%, 70% 40%, 75% 70%, 82% 30%, 87% 70%, 94% 45%, 100% 70%, 100% 100%);
+}
+
+/* Tochas laterais com chama animada */
+.tocha {
+  position: absolute;
+  bottom: 0;
+  width: 18px;
+  height: 30vh;
+  background: linear-gradient(180deg, transparent, var(--cor-couro) 60%);
+}
+
+.tocha-esquerda { left: 6%; }
+.tocha-direita { right: 6%; }
+
+.chama {
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 16px;
+  height: 26px;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  background: radial-gradient(circle at 50% 30%, var(--cor-ouro-claro), var(--cor-brasa) 70%);
+  box-shadow: 0 0 24px 10px rgba(226, 105, 31, 0.35);
+  animation: tremular-chama 1.6s ease-in-out infinite alternate;
+}
+
+@keyframes tremular-chama {
+  0%   { transform: translateX(-50%) scaleY(1) scaleX(1); opacity: 0.95; }
+  50%  { transform: translateX(-48%) scaleY(1.12) scaleX(0.92); opacity: 1; }
+  100% { transform: translateX(-52%) scaleY(0.95) scaleX(1.05); opacity: 0.9; }
+}
+
+/* ==========================================================================
+   TELAS
+   ========================================================================== */
+.palco {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+}
+
+/* Cada "tela" ocupa o mesmo espaço; apenas a tela .ativa é exibida */
+.tela {
+  display: none;
+}
+
+.tela.ativa {
+  display: block;
+  animation: surgir-pergaminho 0.5s ease-out;
+}
+
+@keyframes surgir-pergaminho {
+  from { opacity: 0; transform: translateY(14px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Painel estilo pergaminho / madeira entalhada que envolve cada tela */
+.pergaminho {
+  position: relative;
+  width: min(92vw, 440px);
+  padding: 40px 32px 32px;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,0.15), rgba(0,0,0,0.35)),
+    var(--cor-couro);
+  border: 2px solid var(--cor-ouro);
+  border-radius: var(--raio-padrao);
+  box-shadow:
+    var(--sombra-profunda),
+    inset 0 0 0 6px var(--cor-pedra),
+    inset 0 0 40px rgba(0, 0, 0, 0.55);
+}
+
+/* Ornamento decorativo */
+.moldura-cantos::before,
+.moldura-cantos::after {
+  content: '';
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--cor-ouro);
+  top: 8px;
+}
+
+.moldura-cantos::before {
+  left: 8px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.moldura-cantos::after {
+  right: 8px;
+  border-left: none;
+  border-bottom: none;
+}
+
+/* ---------- Cabeçalhos ---------- */
+.titulo-jogo {
+  font-family: var(--fonte-titulo);
+  text-align: center;
+  font-size: 2rem;
+  letter-spacing: 1px;
+  margin: 0 0 4px;
+  color: var(--cor-ouro-claro);
+  text-shadow: 0 2px 0 #000, 0 0 18px rgba(216, 174, 67, 0.35);
+}
+
+.titulo-jogo span {
+  color: var(--cor-brasa-clara);
+}
+
+.titulo-menor {
+  font-size: 1.6rem;
+}
+
+.subtitulo {
+  text-align: center;
+  margin: 0 0 28px;
+  color: var(--cor-pergaminho-escuro);
+  font-style: italic;
+  font-size: 0.95rem;
+}
+
+/* ---------- Formulário ---------- */
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.campo label {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--cor-ouro);
+}
+
+.campo input {
+  padding: 12px 14px;
+  border-radius: var(--raio-padrao);
+  border: 1px solid var(--cor-couro-claro);
+  background: rgba(20, 16, 12, 0.6);
+  color: var(--cor-pergaminho);
+  font-family: var(--fonte-corpo);
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.campo input::placeholder {
+  color: #8a7c63;
+}
+
+.campo input:focus {
+  outline: none;
+  border-color: var(--cor-ouro);
+  box-shadow: 0 0 0 3px rgba(216, 174, 67, 0.25);
+}
+
+/* ---------- Botões ---------- */
+.grupo-botoes {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.botao {
+  cursor: pointer;
+  padding: 13px 18px;
+  border-radius: var(--raio-padrao);
+  font-family: var(--fonte-titulo);
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  border: 1px solid transparent;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+}
+
+.botao:active {
+  transform: translateY(1px) scale(0.99);
+}
+
+.botao-primario {
+  background: linear-gradient(180deg, var(--cor-brasa-clara), var(--cor-brasa));
+  color: #fff4e0;
+  border-color: #7a2a08;
+  box-shadow: 0 4px 0 #7a2a08, 0 6px 14px rgba(0,0,0,0.4);
+}
+
+.botao-primario:hover {
+  filter: brightness(1.08);
+}
+
+.botao-secundario {
+  background: linear-gradient(180deg, var(--cor-couro-claro), var(--cor-couro));
+  color: var(--cor-ouro-claro);
+  border-color: #1c140d;
+  box-shadow: 0 4px 0 #1c140d, 0 6px 14px rgba(0,0,0,0.4);
+}
+
+.botao-secundario:hover {
+  filter: brightness(1.15);
+}
+
+.botao-perigo {
+  background: linear-gradient(180deg, #a23a3a, var(--cor-erro));
+  color: #ffe9e9;
+  border-color: #5c1616;
+  box-shadow: 0 4px 0 #5c1616, 0 6px 14px rgba(0,0,0,0.4);
+  width: 100%;
+}
+
+.botao-perigo:hover {
+  filter: brightness(1.1);
+}
+
+/* ---------- Mensagens de feedback (sucesso / erro) ---------- */
+.mensagem {
+  min-height: 20px;
+  text-align: center;
+  font-size: 0.9rem;
+  padding: 0;
+  border-radius: var(--raio-padrao);
+  transition: all 0.25s ease;
+}
+
+.mensagem:empty {
+  padding: 0;
+}
+
+.mensagem.erro {
+  padding: 10px;
+  background: rgba(156, 43, 43, 0.18);
+  border: 1px solid var(--cor-erro);
+  color: #ffb4b4;
+  animation: tremer 0.35s ease;
+}
+
+.mensagem.sucesso {
+  padding: 10px;
+  background: rgba(77, 124, 74, 0.18);
+  border: 1px solid var(--cor-sucesso);
+  color: #b9e6b3;
+}
+
+@keyframes tremer {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+/* ==========================================================================
+   DASHBOARD — cartão de personagem
+   ========================================================================== */
+.cartao-personagem {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: rgba(20, 16, 12, 0.5);
+  border: 1px solid var(--cor-couro-claro);
+  border-radius: var(--raio-padrao);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.retrato-personagem {
+  flex-shrink: 0;
+  width: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.1rem;
+  background: radial-gradient(circle, var(--cor-couro-claro), var(--cor-couro));
+  border: 2px solid var(--cor-ouro);
+  border-radius: 50%;
+  box-shadow: 0 0 18px rgba(216, 174, 67, 0.3);
+  animation: pulsar-retrato 2.4s ease-in-out infinite;
+}
+
+@keyframes pulsar-retrato {
+  0%, 100% { box-shadow: 0 0 14px rgba(216, 174, 67, 0.25); }
+  50% { box-shadow: 0 0 24px rgba(216, 174, 67, 0.5); }
+}
+
+.atributos-personagem {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.linha-atributo {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px dashed rgba(216, 174, 67, 0.25);
+  padding-bottom: 6px;
+}
+
+.rotulo-atributo {
+  color: var(--cor-pergaminho-escuro);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.valor-atributo {
+  color: var(--cor-ouro-claro);
+  font-weight: bold;
+  font-family: var(--fonte-titulo);
+}
+
+/* ==========================================================================
+   RODAPÉ
+   ========================================================================== */
+.rodape {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  font-size: 0.75rem;
+  color: #7c6f57;
+  padding: 14px;
+}
+
+/* ==========================================================================
+   RESPONSIVIDADE
+   ========================================================================== */
+@media (max-width: 480px) {
+  .pergaminho {
+    padding: 32px 20px 24px;
+  }
+
+  .titulo-jogo {
+    font-size: 1.6rem;
+  }
+
+  .cartao-personagem {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .linha-atributo {
+    justify-content: space-between;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
